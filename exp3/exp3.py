@@ -1,22 +1,42 @@
 import hashlib
 import random
 
-shared_key = "Hello"
+# Each user has their own secret key
+user_secrets = {
+    "alice": "alice_secret_key",
+    "bob": "bob_secret_key"
+}
 
-def generateNonce():
-    return random.randint(1000, 9999)
+# Store used nonces to prevent reuse attacks
+used_nonces = set()
 
-def generateHash(shared_key, nonce):
-    combined = shared_key + str(nonce)
-    return hashlib.sha256(combined.encode()).hexdigest()
+def generate_nonce():
+    return str(random.randint(100000, 999999))
 
-server_nonce = generateNonce()
-client_hash = generateHash(shared_key, server_nonce)
-attckrnonce=4356545
-attacker_hash = generateHash(shared_key, attckrnonce)
-server_hash = generateHash(shared_key, server_nonce)
+def hash_response(nonce, secret, username):
+    data = nonce + secret + username
+    return hashlib.sha256(data.encode()).hexdigest()
 
-if server_hash == attacker_hash:
-    print("Authentication Successful")
+# ---------------- CLIENT -----------------
+username = "alice"
+secret = user_secrets[username]
+
+# Step 1: Server generates nonce
+nonce = generate_nonce()
+print("Server sends nonce:", nonce)
+
+# Step 2: Client creates response
+client_response = hash_response(nonce, secret, username)
+print(f"Client ({username}) sends response: {client_response}")
+
+# ---------------- SERVER -----------------
+# Step 3: Server verifies
+if nonce in used_nonces:
+    print("❌ Replay attack detected: Nonce already used")
 else:
-    print("Not successfull")
+    expected_response = hash_response(nonce, user_secrets[username], username)
+    if client_response == expected_response:
+        print(f"Authentication Successful for user {username}")
+        used_nonces.add(nonce)  # Mark this nonce as used
+    else:
+        print("Authentication Failed")
