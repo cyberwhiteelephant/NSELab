@@ -38,14 +38,4 @@ print("Generating self-signed certificate...")
 subject = f"/C={country}/ST={state}/L={locality}/O={organization}/OU={org_unit}/CN={common_name}"
 run_command(f"openssl req -new -x509 -key \"{PRIVATE_KEY_FILE}\" -out \"{CERT_FILE}\" -days 365 -subj \"{subject}\"")
 
-# 3. View certificate details
-print("\nCertificate details:")
-details = run_command(f"openssl x509 -in \"{CERT_FILE}\" -text -noout")
-print(details)
-
-# 4. Verify certificate signature (self-signed)
-print("Verifying certificate...")
-verify = run_command(f"openssl verify -CAfile \"{CERT_FILE}\" \"{CERT_FILE}\"")
-print(verify)
-
-print("Done.")
+print("Certificate generated successfully.")
