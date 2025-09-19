@@ -1,6 +1,14 @@
 import subprocess
 import os
 
+# Ask user for certificate details
+country = input("Country Code (e.g., IN): ")
+state = input("State: ")
+locality = input("Locality/City: ")
+organization = input("Organization Name: ")
+org_unit = input("Organizational Unit: ")
+common_name = input("Common Name (e.g., localhost): ")
+
 # Absolute paths
 BASE_DIR = "/home/raghu/Documents/NSELab/exp4"
 PRIVATE_KEY_FILE = os.path.join(BASE_DIR, "private.key")
@@ -27,7 +35,7 @@ run_command(f"openssl genpkey -algorithm RSA -out \"{PRIVATE_KEY_FILE}\" -pkeyop
 
 # 2. Generate self-signed certificate (valid for 365 days)
 print("Generating self-signed certificate...")
-subject = "/C=IN/ST=Jammu/L=Jammu/O=MyOrg/OU=IT/CN=localhost"
+subject = f"/C={country}/ST={state}/L={locality}/O={organization}/OU={org_unit}/CN={common_name}"
 run_command(f"openssl req -new -x509 -key \"{PRIVATE_KEY_FILE}\" -out \"{CERT_FILE}\" -days 365 -subj \"{subject}\"")
 
 # 3. View certificate details
