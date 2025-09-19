@@ -32,7 +32,7 @@ print(f"Client ({username}) sends response: {client_response}")
 # ---------------- SERVER -----------------
 # Step 3: Server verifies
 if nonce in used_nonces:
-    print("❌ Replay attack detected: Nonce already used")
+    print("Replay attack detected: Nonce already used")
 else:
     expected_response = hash_response(nonce, user_secrets[username], username)
     if client_response == expected_response:
