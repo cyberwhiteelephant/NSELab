@@ -18,7 +18,7 @@ def hash_response(nonce, secret, username):
     return hashlib.sha256(data.encode()).hexdigest()
 
 # ---------------- CLIENT -----------------
-username = "alice"
+username = "bob"
 secret = user_secrets[username]
 
 # Step 1: Server generates nonce
