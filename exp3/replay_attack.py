@@ -16,10 +16,10 @@ def authenticate():
 
     server_response = generate_response(challenge, SHARED_SECRET)
     if client_response == server_response:
-        print("Authentication Successful ✅")
+        print("Authentication Successful")
         return challenge, client_response
     else:
-        print("Authentication Failed ❌")
+        print("Authentication Failed")
         return challenge, None
 
 challenge, valid_response = authenticate()
@@ -34,6 +34,7 @@ print("Attacker Replay Response:", attacker_response)
 expected_response = generate_response(new_challenge, SHARED_SECRET)
 
 if attacker_response == expected_response:
-    print("Replay Attack Successful ❌ (Should not happen!)")
+    print("Replay Attack Successful  (Should not happen!)")
 else:
-    print("Replay Attack Detected ✅")
+    print("Replay Attack Detected")
+
